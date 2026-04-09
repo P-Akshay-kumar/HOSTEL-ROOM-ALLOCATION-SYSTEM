@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hostel Room Allocation and Management System for educational institutions">
+    <title>HostelAlloc — Room Allocation & Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav class="navbar hidden" id="navbar">
+        <div class="container">
+            <a href="#" class="logo" onclick="handleLogoClick()"><i
+                    class="fas fa-building"></i>Hostel<span>Alloc</span></a>
+            <ul class="nav-links" id="navLinks"></ul>
+        </div>
+    </nav>
+
+    <main id="mainContent">
+
+        <section id="landingPage">
+            <div class="landing-hero">
+                <div class="container">
+                    <h1>Hostel Room <span>Allocation</span> System</h1>
+                    <p>A comprehensive web-based solution for managing hostel accommodation. Streamline the allocation
+                        process with transparency, fairness, and efficiency.</p>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary btn-lg" onclick="showPage('studentLogin')"><i
+                                class="fas fa-user-graduate"></i> Student Login</button>
+                        <button class="btn btn-secondary btn-lg" onclick="showPage('adminLogin')"><i
+                                class="fas fa-user-tie"></i> Admin Login</button>
+                        <button class="btn btn-outline-light btn-lg" onclick="showPage('studentRegistration')"><i
+                                class="fas fa-user-plus"></i> Register</button>
+                    </div>
+                    <div class="stats-bar">
+                        <div class="stat-item"><span class="stat-number" id="landingTotalRooms">0</span><span
+                                class="stat-label">Total Rooms</span></div>
+                        <div class="stat-item"><span class="stat-number" id="landingStudents">0</span><span
+                                class="stat-label">Students Housed</span></div>
+                        <div class="stat-item"><span class="stat-number" id="landingFacilities">12</span><span
+                                class="stat-label">Facilities</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="features-section">
+                <div class="container">
+                    <div class="section-title">
+                        <h2>System Features</h2>
+                        <p>Everything you need for seamless hostel management</p>
+                    </div>
+                    <div class="features-grid">
+                        <div class="feature-card"><i class="fas fa-user-check"></i>
+                            <h3>Role-Based Access</h3>
+                            <p>Separate secure interfaces for students and administrators with appropriate permissions.
+                            </p>
+                        </div>
+                        <div class="feature-card"><i class="fas fa-th-large"></i>
+                            <h3>Visual Room Selection</h3>
+                            <p>Interactive color-coded room grid showing availability, partial occupancy, and
+                                eligibility.</p>
+                        </div>
+                        <div class="feature-card"><i class="fas fa-chart-line"></i>
+                            <h3>Real-Time Tracking</h3>
+                            <p>Track your allocation status, payment status, and requests in real-time.</p>
+                        </div>
+                        <div class="feature-card"><i class="fas fa-exchange-alt"></i>
+                            <h3>Room Change System</h3>
+                            <p>Request room changes with automatic approval for available rooms.</p>
+                        </div>
+                        <div class="feature-card"><i class="fas fa-credit-card"></i>
+                            <h3>Payment Integration</h3>
+                            <p>Complete hostel fee payment online with instant confirmation.</p>
+                        </div>
+                        <div class="feature-card"><i class="fas fa-mobile-alt"></i>
+                            <h3>Responsive Design</h3>
+                            <p>Works seamlessly on desktop, tablet, and mobile devices.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="features-section" style="padding-top:0;">
+                <div class="container">
+                    <div class="section-title">
+                        <h2>Quick Links</h2>
+                        <p>Explore our hostel services and information</p>
+                    </div>
+                    <div class="quick-links-grid">
+                        <div class="quick-link" onclick="showPage('facilitiesPage')"><i
+                                class="fas fa-dumbbell"></i>Facilities</div>
+                        <div class="quick-link" onclick="showPage('staffPage')"><i class="fas fa-id-badge"></i>Staff &
+                            Security</div>
+                        <div class="quick-link" onclick="showPage('rulesPage')"><i class="fas fa-gavel"></i>Rules</div>
+                        <div class="quick-link" onclick="showPage('faqPage')"><i class="fas fa-question-circle"></i>FAQ
+                        </div>
+                        <div class="quick-link" onclick="showPage('contactPage')"><i
+                                class="fas fa-phone-alt"></i>Contact</div>
+                        <div class="quick-link" onclick="showPage('galleryPage')"><i class="fas fa-images"></i>Gallery
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="footer" id="mainFooter">
+                <div class="container">
+                    <div class="footer-content">
+                        <div class="footer-section">
+                            <h3>HostelAlloc</h3>
+                            <p>A comprehensive solution for educational institutions to manage hostel accommodations
+                                efficiently and transparently.</p>
+                        </div>
+                        <div class="footer-section">
+                            <h3>Contact Us</h3>
+                            <p><i class="fas fa-envelope"></i> support@hostelalloc.edu</p>
+                            <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+                            <p><i class="fas fa-map-marker-alt"></i> University Campus, Admin Block</p>
+                        </div>
+                        <div class="footer-section">
+                            <h3>Quick Links</h3>
+                            <a href="#" onclick="showPage('landingPage')">Home</a>
+                            <a href="#" onclick="showPage('studentLogin')">Student Login</a>
+                            <a href="#" onclick="showPage('adminLogin')">Admin Login</a>
+                            <a href="#" onclick="showPage('faqPage')">FAQ</a>
+                        </div>
+                    </div>
+                    <div class="footer-bottom">
+                        <p>&copy; 2026 HostelAlloc — Hostel Room Allocation System. All rights reserved.</p>
+                    </div>
+                </div>
+            </footer>
+        </section>
+
+        <section id="studentRegistration" class="hidden">
+            <div class="auth-container">
+                <div class="auth-card card">
+                    <h2 class="card-header"><i class="fas fa-user-plus"></i> Student Registration</h2>
+                    <div id="registrationAlert" class="hidden"></div>
+                    <form id="registrationForm">
+                        <div class="form-row">
+                            <div class="form-group"><label class="form-label" for="fullName">Full Name</label><input
+                                    type="text" id="fullName" class="form-control"
+                                    placeholder="Letters and spaces only (e.g. Arjun Sharma)" maxlength="20" required>
+                                <small class="form-hint">Only letters, spaces, and periods. Max 20 chars.</small>
+                            </div>
+                            <div class="form-group"><label class="form-label" for="rollNumber">Roll Number</label><input
+                                    type="text" id="rollNumber" class="form-control" placeholder="10-digit roll number"
+                                    maxlength="10" required>
+                                <small class="form-hint">Exactly 10 digits.</small>
+                            </div>
+                        </div>
+                        <div class="form-group"><label class="form-label" for="email">Email Address</label><input
+                                type="email" id="email" class="form-control" placeholder="student@university.edu"
+                                required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label class="form-label" for="department">Department</label>
+                                <select id="department" class="form-select" required>
+                                    <option value="">Select</option>
+                                    <option value="cse">Computer Science & Engineering</option>
+                                    <option value="ece">Electronics & Communication</option>
+                                    <option value="mech">Mechanical Engineering</option>
+                                    <option value="civil">Civil Engineering</option>
+                                    <option value="eee">Electrical Engineering</option>
+                                    <option value="mba">Business Administration</option>
+                                </select>
+                            </div>
+                            <div class="form-group"><label class="form-label" for="year">Year of Study</label>
+                                <select id="year" class="form-select" required>
+                                    <option value="">Select</option>
+                                    <option value="1">1st Year</option>
+                                    <option value="2">2nd Year</option>
+                                    <option value="3">3rd Year</option>
+                                    <option value="4">4th Year</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group"><label class="form-label">Gender</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="gender" value="Male" required> Male</label>
+                                <label><input type="radio" name="gender" value="Female"> Female</label>
+                                <label><input type="radio" name="gender" value="Other"> Other</label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label class="form-label" for="password">Password</label><input
+                                    type="password" id="password" class="form-control"
+                                    placeholder="Min 12 chars, A-z, 0-9, !@#$" minlength="12" required>
+                                <small class="form-hint">Min 12 chars. Must include uppercase, lowercase, number &
+                                    special character.</small>
+                            </div>
+                            <div class="form-group"><label class="form-label" for="confirmPassword">Confirm
+                                    Password</label><input type="password" id="confirmPassword" class="form-control"
+                                    placeholder="Re-enter your password" minlength="12" required></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block btn-lg">Create Account</button>
+                        <div class="text-center mt-20">
+                            <p>Already registered? <a href="#" onclick="showPage('studentLogin')">Login here</a></p>
+                            <p><a href="#" onclick="showPage('landingPage')">← Back to Home</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="studentLogin" class="hidden">
+            <div class="auth-container">
+                <div class="auth-card card">
+                    <h2 class="card-header"><i class="fas fa-user-graduate"></i> Student Login</h2>
+                    <div id="studentLoginAlert" class="hidden"></div>
+                    <form id="studentLoginForm">
+                        <div class="form-group"><label class="form-label" for="studentRollNumber">Roll
+                                Number</label><input type="text" id="studentRollNumber" class="form-control"
+                                placeholder="Enter roll number" required></div>
+                        <div class="form-group"><label class="form-label" for="studentPassword">Password</label><input
+                                type="password" id="studentPassword" class="form-control" placeholder="Enter password"
+                                required></div>
+                        <button type="submit" class="btn btn-primary btn-block btn-lg">Login</button>
+                        <div class="text-center mt-20">
+                            <p>Don't have an account? <a href="#" onclick="showPage('studentRegistration')">Register
+                                    here</a></p>
+                            <p><a href="#" onclick="showPage('landingPage')">← Back to Home</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="adminLogin" class="hidden">
+            <div class="auth-container">
+                <div class="auth-card card">
+                    <h2 class="card-header"><i class="fas fa-user-tie"></i> Administrator Login</h2>
+                    <div id="adminLoginAlert" class="hidden"></div>
+                    <form id="adminLoginForm">
+                        <div class="form-group"><label class="form-label" for="adminUsername">Username</label><input
+                                type="text" id="adminUsername" class="form-control" placeholder="admin" required></div>
+                        <div class="form-group"><label class="form-label" for="adminPassword">Password</label><input
+                                type="password" id="adminPassword" class="form-control" placeholder="admin123" required>
+                        </div>
+                        <button type="submit" class="btn btn-secondary btn-block btn-lg">Login as Admin</button>
+                        <div class="text-center mt-20">
+                            <p><a href="#" onclick="showPage('landingPage')">← Back to Home</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="studentDashboard" class="hidden">
+            <div class="container mt-30">
+                <div class="mb-20">
+                    <h1>Welcome, <span id="studentName" style="color:var(--secondary)">Student</span></h1>
+                    <p style="color:var(--text-secondary)">Manage your hostel accommodation, requests, and payments</p>
+                </div>
+                <div id="studentAlert" class="alert alert-success hidden"><i class="fas fa-check-circle"></i><span
+                        id="alertMessage"></span></div>
+                <div class="dashboard-cards">
+                    <div class="dashboard-card"><i class="fas fa-clipboard-list"></i>
+                        <div class="count" id="applicationStatusLabel">Not Applied</div>
+                        <div class="label">Application Status</div>
+                    </div>
+                    <div class="dashboard-card"><i class="fas fa-building"></i>
+                        <div class="count" id="hostelBlockLabel">-</div>
+                        <div class="label">Hostel Block</div>
+                    </div>
+                    <div class="dashboard-card"><i class="fas fa-door-closed"></i>
+                        <div class="count" id="roomNumberLabel">-</div>
+                        <div class="label">Room Number</div>
+                    </div>
+                    <div class="dashboard-card"><i class="fas fa-credit-card"></i>
+                        <div class="count" id="paymentStatusLabel">-</div>
+                        <div class="label">Payment</div>
+                    </div>
+                </div>
+                <div class="tabs" id="studentTabs">
+                    <button class="tab-btn active" data-tab="sTabOverview"><i class="fas fa-home"></i> Overview</button>
+                    <button class="tab-btn" data-tab="sTabRoomSelect"><i class="fas fa-th-large"></i> Room
+                        Selection</button>
+                    <button class="tab-btn" data-tab="sTabRoomChange"><i class="fas fa-exchange-alt"></i> Room
+                        Change</button>
+                    <button class="tab-btn" data-tab="sTabGuest"><i class="fas fa-user-friends"></i> Guest</button>
+                    <button class="tab-btn" data-tab="sTabGatePass"><i class="fas fa-sign-out-alt"></i> Gate
+                        Pass</button>
+                    <button class="tab-btn" data-tab="sTabPayment"><i class="fas fa-credit-card"></i> Payment</button>
+                    <button class="tab-btn" data-tab="sTabProfile"><i class="fas fa-user"></i> Profile</button>
+                </div>
+
+                <div class="tab-content active" id="sTabOverview">
+                    <div class="card">
+                        <h2 class="card-header"><i class="fas fa-clipboard-list"></i> Application Status</h2>
+                        <div id="applicationFormContainer">
+                            <form id="hostelApplicationForm">
+                                <div class="form-row">
+                                    <div class="form-group"><label class="form-label" for="preferredBlock">Preferred
+                                            Block</label>
+                                        <select id="preferredBlock" class="form-select" required>
+                                            <option value="">Select Block</option>
+                                            <option value="A">Block A</option>
+                                            <option value="B">Block B</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group"><label class="form-label" for="roomType">Room Type</label>
+                                        <select id="roomType" class="form-select" required>
+                                            <option value="">Select</option>
+                                            <option value="1">Single</option>
+                                            <option value="2">2-Sharing</option>
+                                            <option value="3">3-Sharing</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group"><label class="form-label" for="specialRequirements">Special
+                                        Requirements (Optional)</label><textarea id="specialRequirements"
+                                        class="form-control" rows="3"
+                                        placeholder="Medical conditions, accessibility needs..."></textarea></div>
+                                <div class="form-group">
+                                    <div class="form-check"><input type="checkbox" id="agreement" required><label
+                                            for="agreement">I agree to abide by hostel rules and regulations</label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg">Submit Application</button>
+                            </form>
+                        </div>
+                        <div id="applicationStatusContainer" class="hidden">
+                            <div class="text-center">
+                                <div class="status-badge status-pending mt-20 mb-20" id="statusBadge">Pending</div>
+                                <div id="allocationDetails" class="hidden">
+                                    <div class="table-container">
+                                        <table class="data-table">
+                                            <tr>
+                                                <td><strong>Block</strong></td>
+                                                <td id="detailBlock"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Room</strong></td>
+                                                <td id="detailRoom"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Floor</strong></td>
+                                                <td id="detailFloor"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Type</strong></td>
+                                                <td id="detailType"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Date</strong></td>
+                                                <td id="detailDate"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div id="noAllocationMessage" class="hidden">
+                                    <div class="empty-state"><i class="fas fa-bed"></i>
+                                        <h3>Not Allocated Yet</h3>
+                                        <p>Your application is under review.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="sTabRoomSelect">
+                    <div class="card">
+                        <h2 class="card-header"><i class="fas fa-th-large"></i> Intelligent Room Selection</h2>
+                        <p class="mb-16" style="color:var(--text-secondary)">Rooms are filtered by your year of study.
+                            Select a block to view available rooms.</p>
+                        <div class="form-row mb-20">
+                            <div class="form-group"><label class="form-label">Select Block</label>
+                                <select id="roomSelectBlock" class="form-select">
+                                    <option value="">Choose Block</option>
+                                    <option value="A">Block A</option>
+                                    <option value="B">Block B</option>
+                                </select>
+                            </div>
+                            <div class="form-group"><label class="form-label">Room Type</label>
+                                <select id="roomSelectType" class="form-select">
+                                    <option value="">All Types</option>
+                                    <option value="1">Single</option>
+                                    <option value="2">2-Sharing</option>
+                                    <option value="3">3-Sharing</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="room-legend">
+                            <div class="legend-item">
+                                <div class="legend-color legend-available"></div>Available
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color legend-partial"></div>Partially Filled
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color legend-occupied"></div>Fully Occupied
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color legend-ineligible"></div>Not Eligible
+                            </div>
+                        </div>
+                        <div id="roomGridContainer" class="room-grid-container">
+                            <div class="empty-state"><i class="fas fa-building"></i>
+                                <h3>Select a Block</h3>
+                                <p>Choose a block above to see available rooms</p>
+                            </div>
+                        </div>
+                        <div id="selectedRoomInfo" class="hidden mt-20 card"
+                            style="background:#f8fafc;border:2px solid var(--secondary)">
+                            <h3 style="color:var(--secondary)"><i class="fas fa-check-circle"></i> Selected Room</h3>
+                            <p id="selectedRoomDetails" class="mt-10"></p>
+                            <button class="btn btn-success mt-16" onclick="submitRoomSelection()">Confirm &
+                                Apply</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="sTabRoomChange">
+                    <div class="card">
+                        <h2 class="card-header"><i class="fas fa-exchange-alt"></i> Room Change Request</h2>
+                        <div id="roomChangeEligible" class="hidden">
+                            <p class="mb-16" style="color:var(--text-secondary)">Current Room: <strong
+                                    id="currentRoomInfo">-</strong>. Select a new room below.</p>
+                            <div class="form-row mb-20">
+                                <div class="form-group"><label class="form-label">Target Block</label>
+                                    <select id="roomChangeBlock" class="form-select">
+                                        <option value="">Choose Block</option>
+                                        <option value="A">Block A</option>
+                                        <option value="B">Block B</option>
+                                    </select>
+                                </div>
+                                <div class="form-group"><label class="form-label">Reason</label><input type="text"
+                                        id="roomChangeReason" class="form-control" placeholder="Reason for change">
+                                </div>
+                            </div>
+                            <div class="room-legend">
+                                <div class="legend-item">
+                                    <div class="legend-color legend-available"></div>Available (Auto-approve)
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color legend-partial"></div>Partially Filled (Available)
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color legend-occupied"></div>Fully Occupied
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color legend-ineligible"></div>Not Eligible
+                                </div>
+                            </div>
+                            <div id="roomChangeGrid" class="room-grid-container"></div>
+                            <div id="roomChangeSelectedInfo" class="hidden mt-20 card"
+                                style="background:#f8fafc;border:2px solid var(--secondary)">
+                                <p id="roomChangeSelectedDetails"></p>
+                                <button class="btn btn-primary mt-10" onclick="submitRoomChangeRequest()">Submit
+                                    Request</button>
+                            </div>
+                        </div>
+                        <div id="roomChangeNotEligible">
+                            <div class="empty-state"><i class="fas fa-exchange-alt"></i>
+                                <h3>Not Available</h3>
+                                <p>You need an allocated room before requesting a change.</p>
+                            </div>
+                        </div>
+                        <div id="roomChangeHistory" class="hidden mt-20">
+                            <h3 class="mb-10" style="color:var(--primary)">Request History</h3>
+                            <div class="table-container">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>From</th>
+                                            <th>To</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="roomChangeHistoryBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="sTabGuest">
+                    <div class="card">
+                        <h2 class="card-header"><i class="fas fa-user-friends"></i> Guest Accommodation Request</h2>
+                        <form id="guestForm">
+                            <div class="form-row">
+                                <div class="form-group"><label class="form-label">Guest Name</label><input type="text"
+                                        id="guestName" class="form-control" required placeholder="Full name"></div>
+                                <div class="form-group"><label class="form-label">Relationship</label><input type="text"
+                                        id="guestRelation" class="form-control" required
+                                        placeholder="e.g. Parent, Guardian"></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"><label class="form-label">Check-in Date</label><input
+                                        type="date" id="guestCheckIn" class="form-control" required></div>
+                                <div class="form-group"><label class="form-label">Check-out Date</label><input
+                                        type="date" id="guestCheckOut" class="form-control" required></div>
+                            </div>
+                            <div class="form-group"><label class="form-label">Purpose of Visit</label><textarea
+                                    id="guestPurpose" class="form-control" rows="2" placeholder="Reason for visit"
+                                    required></textarea></div>
+                            <button type="submit" class="btn btn-primary">Submit Request</button>
+                        </form>
+                        <div id="guestRequestsContainer" class="mt-20 hidden">
+                            <h3 class="mb-10" style="color:var(--primary)">Your Guest Requests</h3>
+                            <div class="table-container">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Guest</th>
+                                            <th>Check-in</th>
+                                            <th>Check-out</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="guestRequestsBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="sTabGatePass">
+                    <div class="card">
+                        <h2 class="card-header"><i class="fas fa-sign-out-alt"></i> Gate / Vacation Pass</h2>
+                        <form id="gatePassForm">
+                            <div class="form-group"><label class="form-label">Pass Type</label>
+                                <select id="passType" class="form-select" required>
+                                    <option value="">Select</option>
+                                    <option value="gate">Gate Pass (Day)</option>
+                                    <option value="vacation">Vacation Pass</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"><label class="form-label">From Date</label><input type="date"
+                                        id="passFromDate" class="form-control" required></div>
+                                <div class="form-group"><label class="form-label">To Date</label><input type="date"
+                                        id="passToDate" class="form-control" required></div>
+                            </div>
+                            <div class="form-group"><label class="form-label">Reason</label><textarea id="passReason"
+                                    class="form-control" rows="2" required placeholder="Reason for leave"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Pass Request</button>
+                        </form>
+                        <div id="gatePassContainer" class="mt-20 hidden">
+                            <h3 class="mb-10" style="color:var(--primary)">Your Pass Requests</h3>
+                            <div class="table-container">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Type</th>
+                                            <th>From</th>
+                                            <th>To</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="gatePassBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="sTabPayment">
+                    <div class="card">
+                        <h2 class="card-header"><i class="fas fa-credit-card"></i> Payment Gateway</h2>
+                        <div id="paymentRequired" class="hidden">
+                            <div id="payStep1">
+                                <div class="payment-card">
+                                    <h3>Hostel Fee Payment</h3>
+                                    <p style="opacity:0.8">Complete payment to confirm your room allocation</p>
+                                    <div class="payment-amount">₹45,000</div>
+                                    <div class="payment-details">
+                                        <p><span>Room Fee</span><span>₹35,000</span></p>
+                                        <p><span>Mess Fee</span><span>₹8,000</span></p>
+                                        <p><span>Maintenance</span><span>₹2,000</span></p>
+                                    </div>
+                                    <button class="btn btn-primary btn-lg btn-block" onclick="showPaymentStep2()"><i
+                                            class="fas fa-arrow-right"></i> Proceed to Pay</button>
+                                </div>
+                            </div>
+                            <div id="payStep2" class="hidden">
+                                <h3 class="mb-16" style="color:var(--primary)">Choose Payment Method</h3>
+                                <div class="pay-methods">
+                                    <div class="pay-method-card" onclick="selectPayMethod('card')" id="pmCard">
+                                        <i class="fas fa-credit-card" style="color:#1a73e8"></i>
+                                        <span>Credit / Debit Card</span>
+                                        <small>Visa, Mastercard, Rupay</small>
+                                    </div>
+                                    <div class="pay-method-card" onclick="selectPayMethod('upi')" id="pmUpi">
+                                        <i class="fas fa-mobile-alt" style="color:#4caf50"></i>
+                                        <span>UPI</span>
+                                        <small>Google Pay, PhonePe, Paytm</small>
+                                    </div>
+                                    <div class="pay-method-card" onclick="selectPayMethod('netbanking')" id="pmNet">
+                                        <i class="fas fa-university" style="color:#ff9800"></i>
+                                        <span>Net Banking</span>
+                                        <small>All major banks</small>
+                                    </div>
+                                    <div class="pay-method-card" onclick="selectPayMethod('wallet')" id="pmWallet">
+                                        <i class="fas fa-wallet" style="color:#9c27b0"></i>
+                                        <span>Wallet</span>
+                                        <small>Paytm, Freecharge, Mobikwik</small>
+                                    </div>
+                                </div>
+                                <div id="payFormCard" class="hidden mt-20">
+                                    <div class="form-group"><label class="form-label">Card Number</label><input
+                                            type="text" class="form-control" id="cardNumber"
+                                            placeholder="1234 5678 9012 3456" maxlength="19"></div>
+                                    <div class="form-row">
+                                        <div class="form-group"><label class="form-label">Expiry (MM/YY)</label><input
+                                                type="text" class="form-control" id="cardExpiry" placeholder="MM/YY"
+                                                maxlength="5"></div>
+                                        <div class="form-group"><label class="form-label">CVV</label><input
+                                                type="password" class="form-control" id="cardCvv" placeholder="•••"
+                                                maxlength="3"></div>
+                                    </div>
+                                    <div class="form-group"><label class="form-label">Name on Card</label><input
+                                            type="text" class="form-control" id="cardName"
+                                            placeholder="Full name as on card"></div>
+                                </div>
+                                <div id="payFormUpi" class="hidden mt-20">
+                                    <div class="form-group"><label class="form-label">UPI ID</label><input type="text"
+                                            class="form-control" id="upiId" placeholder="yourname@upi"></div>
+                                    <div class="pay-upi-apps">
+                                        <div class="upi-app" onclick="this.classList.toggle('selected')"><i
+                                                class="fab fa-google-pay"
+                                                style="color:#4285f4;font-size:28px"></i><small>GPay</small></div>
+                                        <div class="upi-app" onclick="this.classList.toggle('selected')"><i
+                                                class="fas fa-mobile-alt"
+                                                style="color:#5f259f;font-size:28px"></i><small>PhonePe</small></div>
+                                        <div class="upi-app" onclick="this.classList.toggle('selected')"><i
+                                                class="fas fa-wallet"
+                                                style="color:#00baf2;font-size:28px"></i><small>Paytm</small></div>
+                                        <div class="upi-app" onclick="this.classList.toggle('selected')"><i
+                                                class="fas fa-university"
+                                                style="color:#f47920;font-size:28px"></i><small>BHIM</small></div>
+                                    </div>
+                                </div>
+                                <div id="payFormNetbanking" class="hidden mt-20">
+                                    <div class="form-group"><label class="form-label">Select Your Bank</label>
+                                        <select class="form-select" id="bankSelect">
+                                            <option value="">Choose Bank</option>
+                                            <option value="sbi">State Bank of India</option>
+                                            <option value="hdfc">HDFC Bank</option>
+                                            <option value="icici">ICICI Bank</option>
+                                            <option value="axis">Axis Bank</option>
+                                            <option value="bob">Bank of Baroda</option>
+                                            <option value="pnb">Punjab National Bank</option>
+                                            <option value="kotak">Kotak Mahindra Bank</option>
+                                            <option value="yes">Yes Bank</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="payFormWallet" class="hidden mt-20">
+                                    <div class="form-group"><label class="form-label">Select Wallet</label>
+                                        <select class="form-select" id="walletSelect">
+                                            <option value="">Choose Wallet</option>
+                                            <option value="paytm">Paytm</option>
+                                            <option value="freecharge">Freecharge</option>
+                                            <option value="mobikwik">Mobikwik</option>
+                                            <option value="amazonpay">Amazon Pay</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group"><label class="form-label">Mobile Number</label><input
+                                            type="tel" class="form-control" id="walletMobile"
+                                            placeholder="+91 9876543210"></div>
+                                </div>
+                                <div class="flex-between mt-20">
+                                    <button class="btn btn-outline" onclick="showPaymentStep1()"><i
+                                            class="fas fa-arrow-left"></i> Back</button>
+                                    <button class="btn btn-primary btn-lg" onclick="processPayment()" id="payBtn"><i
+                                            class="fas fa-lock"></i> Pay ₹45,000</button>
+                                </div>
+                            </div>
+                            <div id="payStep3" class="hidden text-center" style="padding:50px">
+                                <div class="pay-spinner"></div>
+                                <h3 class="mt-20" style="color:var(--primary)">Processing Payment...</h3>
+                                <p style="color:var(--text-secondary)">Please do not close this window</p>
+                            </div>
+                        </div>
+                        <div id="paymentDone" class="hidden text-center" style="padding:40px">
+                            <i class="fas fa-check-circle" style="font-size:60px;color:var(--success)"></i>
+                            <h3 class="mt-20" style="color:var(--success)">Payment Successful!</h3>
+                            <p class="mt-10" style="color:var(--text-secondary)">Transaction ID: <strong
+                                    id="transactionId">-</strong></p>
+                            <p style="color:var(--text-secondary)">Date: <strong id="paymentDate">-</strong></p>
+                        </div>
+                        <div id="paymentNotRequired">
+                            <div class="empty-state"><i class="fas fa-credit-card"></i>
+                                <h3>No Payment Pending</h3>
+                                <p>You need an approved room allocation before making payment.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="sTabProfile">
+                    <div class="card">
+                        <h2 class="card-header"><i class="fas fa-user"></i> Student Profile <span
+                                style="font-size:12px;color:var(--text-light);font-weight:400">(Read-only)</span></h2>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <tr>
+                                    <td><strong>Full Name</strong></td>
+                                    <td id="profileName">-</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Roll Number</strong></td>
+                                    <td id="profileRoll">-</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Email</strong></td>
+                                    <td id="profileEmail">-</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Department</strong></td>
+                                    <td id="profileDept">-</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Year</strong></td>
+                                    <td id="profileYear">-</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Gender</strong></td>
+                                    <td id="profileGender">-</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="adminDashboard" class="hidden">
+            <div class="container mt-30">
+                <div class="mb-20">
+                    <h1>Admin <span style="color:var(--secondary)">Dashboard</span></h1>
+                    <p style="color:var(--text-secondary)">Manage rooms, applications, allocations, and student requests
+                    </p>
+                </div>
+                <div id="adminAlert" class="alert alert-success hidden"><i class="fas fa-check-circle"></i><span
+                        id="adminAlertMessage"></span></div>
+                <div class="dashboard-cards">
+                    <div class="dashboard-card"><i class="fas fa-users"></i>
+                        <div class="count" id="totalStudents">0</div>
+                        <div class="label">Total Students</div>
+                    </div>
+                    <div class="dashboard-card"><i class="fas fa-building"></i>
+                        <div class="count" id="totalRooms">0</div>
+                        <div class="label">Total Rooms</div>
+                    </div>
+                    <div class="dashboard-card"><i class="fas fa-check-circle"></i>
+                        <div class="count" id="allocatedRooms">0</div>
+                        <div class="label">Allocated</div>
+                    </div>
+                    <div class="dashboard-card"><i class="fas fa-bed"></i>
+                        <div class="count" id="availableRooms">0</div>
+                        <div class="label">Vacant Rooms</div>
+                    </div>
+                </div>
+                <div class="tabs" id="adminTabs">
+                    <button class="tab-btn active" data-tab="aTabRooms"><i class="fas fa-building"></i> Rooms</button>
+                    <button class="tab-btn" data-tab="aTabApplications"><i class="fas fa-clipboard-list"></i>
+                        Applications</button>
+                    <button class="tab-btn" data-tab="aTabAllocations"><i class="fas fa-bed"></i> Allocations</button>
+                    <button class="tab-btn" data-tab="aTabRoomChanges"><i class="fas fa-exchange-alt"></i> Room
+                        Changes</button>
+                    <button class="tab-btn" data-tab="aTabPayments"><i class="fas fa-credit-card"></i> Payments</button>
+                    <button class="tab-btn" data-tab="aTabComplaints"><i class="fas fa-exclamation-triangle"></i>
+                        Complaints</button>
+                    <button class="tab-btn" data-tab="aTabGuests"><i class="fas fa-user-friends"></i> Guests</button>
+                    <button class="tab-btn" data-tab="aTabGatePasses"><i class="fas fa-sign-out-alt"></i>
+                        Passes</button>
+                </div>
+
+                <div class="tab-content active" id="aTabRooms">
+                    <div class="card">
+                        <h2 class="card-header"><i class="fas fa-building"></i> Room Management</h2>
+                        <div class="flex-between mb-20">
+                            <button class="btn btn-primary" onclick="toggleEl('addRoomForm')"><i
+                                    class="fas fa-plus"></i> Add Room</button>
+                            <input type="text" id="roomSearch" class="form-control" placeholder="Search rooms..."
+                                style="max-width:250px">
+                        </div>
+                        <div id="addRoomForm" class="hidden mb-20"
+                            style="padding:20px;background:#f8fafc;border-radius:var(--radius);border:1px solid var(--border)">
+                            <form id="roomForm">
+                                <div class="form-row">
+                                    <div class="form-group"><label class="form-label">Room Number</label><input
+                                            type="text" id="newRoomNumber" class="form-control" required
+                                            placeholder="e.g. 301"></div>
+                                    <div class="form-group"><label class="form-label">Block</label>
+                                        <select id="newRoomBlock" class="form-select" required>
+                                            <option value="">Select</option>
+                                            <option value="A">Block A</option>
+                                            <option value="B">Block B</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group"><label class="form-label">Floor</label><input type="number"
+                                            id="newRoomFloor" class="form-control" min="1" max="12" required
+                                            placeholder="1-12"></div>
+                                    <div class="form-group"><label class="form-label">Capacity</label>
+                                        <select id="newRoomCapacity" class="form-select" required>
+                                            <option value="">Select</option>
+                                            <option value="1">Single</option>
+                                            <option value="2">2-Sharing</option>
+                                            <option value="3">3-Sharing</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="flex-center gap-10"><button type="submit" class="btn btn-success">Add
+                                        Room</button><button type="button" class="btn btn-outline"
+                                        onclick="toggleEl('addRoomForm')">Cancel</button></div>
+                            </form>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table" id="roomsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Room</th>
+                                        <th>Block</th>
+                                        <th>Floor</th>
+                                        <th>Capacity</th>
+                                        <th>Occupancy</th>
+                                        <th>Year</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="roomsTableBody"></tbody>
+                            </table>
+                        </div>
+                        <div id="noRoomsMessage" class="empty-state hidden"><i class="fas fa-building"></i>
+                            <h3>No Rooms</h3>
+                            <p>Click "Add Room" to get started.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="aTabApplications">
+                    <div class="card">
+                        <h2 class="card-header"><i class="fas fa-clipboard-list"></i> Student Applications</h2>
+                        <div class="flex-between mb-20" style="flex-wrap:wrap;gap:10px">
+                            <input type="text" id="studentSearch" class="form-control" placeholder="Search..."
+                                style="max-width:250px">
+                            <div style="display:flex;gap:10px;flex-wrap:wrap">
+                                <select id="filterYear" class="form-select" style="width:130px">
+                                    <option value="">All Years</option>
+                                    <option value="1">1st Year</option>
+                                    <option value="2">2nd Year</option>
+                                    <option value="3">3rd Year</option>
+                                    <option value="4">4th Year</option>
+                                </select>
+                                <select id="filterStatus" class="form-select" style="width:130px">
+                                    <option value="">All Status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="approved">Approved</option>
+                                    <option value="rejected">Rejected</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Roll</th>
+                                        <th>Name</th>
+                                        <th>Dept</th>
+                                        <th>Year</th>
+                                        <th>Block</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="applicationsTableBody"></tbody>
+                            </table>
+                        </div>
+                        <div id="noApplicationsMessage" class="empty-state hidden"><i class="fas fa-clipboard-list"></i>
+                            <h3>No Applications</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="aTabAllocations">
+                    <div class="card">
+                        <h2 class="card-header"><i class="fas fa-bed"></i> Allocation Control</h2>
+                        <button class="btn btn-primary mb-20" onclick="toggleEl('allocationFormContainer')"><i
+                                class="fas fa-user-plus"></i> Allocate Room</button>
+                        <div id="allocationFormContainer" class="hidden mb-20"
+                            style="padding:20px;background:#f8fafc;border-radius:var(--radius);border:1px solid var(--border)">
+                            <form id="allocationForm">
+                                <div class="form-row">
+                                    <div class="form-group"><label class="form-label">Student</label><select
+                                            id="allocateStudent" class="form-select" required>
+                                            <option value="">Select</option>
+                                        </select></div>
+                                    <div class="form-group"><label class="form-label">Room</label><select
+                                            id="allocateRoom" class="form-select" required>
+                                            <option value="">Select</option>
+                                        </select></div>
+                                </div>
+                                <div class="flex-center gap-10"><button type="submit"
+                                        class="btn btn-success">Allocate</button><button type="button"
+                                        class="btn btn-outline"
+                                        onclick="toggleEl('allocationFormContainer')">Cancel</button></div>
+                            </form>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Student</th>
+                                        <th>Roll</th>
+                                        <th>Room</th>
+                                        <th>Block</th>
+                                        <th>Floor</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="allocationsTableBody"></tbody>
+                            </table>
+                        </div>
+                        <div id="noAllocationsMessage" class="empty-state hidden"><i class="fas fa-bed"></i>
+                            <h3>No Allocations</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="aTabRoomChanges">
+                    <div class="card">
+                        <h2 class="card-header"><i class="fas fa-exchange-alt"></i> Room Change Requests</h2>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Student</th>
+                                        <th>From</th>
+                                        <th>To</th>
+                                        <th>Reason</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="roomChangeRequestsBody"></tbody>
+                            </table>
+                        </div>
+                        <div id="noRoomChanges" class="empty-state hidden"><i class="fas fa-exchange-alt"></i>
+                            <h3>No Requests</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="aTabPayments">
+                    <div class="card">
+                        <h2 class="card-header"><i class="fas fa-credit-card"></i> Payment Management</h2>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Student</th>
+                                        <th>Roll</th>
+                                        <th>Room</th>
+                                        <th>Amount</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="paymentsTableBody"></tbody>
+                            </table>
+                        </div>
+                        <div id="noPayments" class="empty-state hidden"><i class="fas fa-credit-card"></i>
+                            <h3>No Payments</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="aTabComplaints">
+                    <div class="card">
+                        <h2 class="card-header"><i class="fas fa-exclamation-triangle"></i> Complaint Management</h2>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Ref</th>
+                                        <th>Name</th>
+                                        <th>Room</th>
+                                        <th>Category</th>
+                                        <th>Description</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="complaintsTableBody"></tbody>
+                            </table>
+                        </div>
+                        <div id="noComplaints" class="empty-state hidden"><i class="fas fa-exclamation-triangle"></i>
+                            <h3>No Complaints</h3>
+                            <p>No complaints have been filed yet.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="aTabGuests">
+                    <div class="card">
+                        <h2 class="card-header"><i class="fas fa-user-friends"></i> Guest Accommodation Requests</h2>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Student</th>
+                                        <th>Guest</th>
+                                        <th>Relation</th>
+                                        <th>Check-in</th>
+                                        <th>Check-out</th>
+                                        <th>Purpose</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminGuestBody"></tbody>
+                            </table>
+                        </div>
+                        <div id="noAdminGuests" class="empty-state hidden"><i class="fas fa-user-friends"></i>
+                            <h3>No Guest Requests</h3>
+                            <p>No guest accommodation requests yet.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="aTabGatePasses">
+                    <div class="card">
+                        <h2 class="card-header"><i class="fas fa-sign-out-alt"></i> Gate / Vacation Pass Requests</h2>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Student</th>
+                                        <th>Type</th>
+                                        <th>From</th>
+                                        <th>To</th>
+                                        <th>Reason</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminGatePassBody"></tbody>
+                            </table>
+                        </div>
+                        <div id="noAdminGatePasses" class="empty-state hidden"><i class="fas fa-sign-out-alt"></i>
+                            <h3>No Pass Requests</h3>
+                            <p>No gate/vacation pass requests yet.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="facilitiesPage" class="hidden">
+            <div class="page-hero">
+                <div class="container">
+                    <h1><i class="fas fa-dumbbell"></i> Hostel Facilities</h1>
+                    <p>Explore amenities available in our boys and girls hostels</p>
+                </div>
+            </div>
+            <div class="container page-content">
+                <h2 class="mb-20" style="color:var(--primary)"><i class="fas fa-male"
+                        style="color:var(--secondary)"></i> Boys Hostel</h2>
+                <div class="facility-grid mb-30">
+                    <div class="facility-card"><i class="fas fa-wifi"></i>
+                        <h3>High-Speed Wi-Fi</h3>
+                        <p>24/7 broadband connectivity across all floors</p>
+                    </div>
+                    <div class="facility-card"><i class="fas fa-utensils"></i>
+                        <h3>Mess & Canteen</h3>
+                        <p>Hygienic meals served 3 times daily with snack bar</p>
+                    </div>
+                    <div class="facility-card"><i class="fas fa-dumbbell"></i>
+                        <h3>Gymnasium</h3>
+                        <p>Fully equipped gym with modern fitness equipment</p>
+                    </div>
+                    <div class="facility-card"><i class="fas fa-book-reader"></i>
+                        <h3>Reading Room</h3>
+                        <p>Quiet study area open 24/7 with AC</p>
+                    </div>
+                    <div class="facility-card"><i class="fas fa-table-tennis"></i>
+                        <h3>Recreation Room</h3>
+                        <p>Indoor games — table tennis, chess, carrom</p>
+                    </div>
+                    <div class="facility-card"><i class="fas fa-tshirt"></i>
+                        <h3>Laundry Service</h3>
+                        <p>Professional laundry pickup and delivery</p>
+                    </div>
+                </div>
+                <h2 class="mb-20" style="color:var(--primary)"><i class="fas fa-female" style="color:var(--danger)"></i>
+                    Girls Hostel</h2>
+                <div class="facility-grid mb-30">
+                    <div class="facility-card"><i class="fas fa-wifi"></i>
+                        <h3>High-Speed Wi-Fi</h3>
+                        <p>Secure broadband across all floors</p>
+                    </div>
+                    <div class="facility-card"><i class="fas fa-utensils"></i>
+                        <h3>Mess & Kitchen</h3>
+                        <p>Nutritious meals with self-cooking kitchen access</p>
+                    </div>
+                    <div class="facility-card"><i class="fas fa-spa"></i>
+                        <h3>Yoga & Meditation</h3>
+                        <p>Dedicated wellness room for yoga sessions</p>
+                    </div>
+                    <div class="facility-card"><i class="fas fa-book-reader"></i>
+                        <h3>Reading Room</h3>
+                        <p>Air-conditioned study hall open round the clock</p>
+                    </div>
+                    <div class="facility-card"><i class="fas fa-tv"></i>
+                        <h3>Common Room</h3>
+                        <p>TV lounge, indoor games, and social area</p>
+                    </div>
+                    <div class="facility-card"><i class="fas fa-tshirt"></i>
+                        <h3>Laundry Service</h3>
+                        <p>In-house laundry with express service</p>
+                    </div>
+                </div>
+                <div class="text-center"><button class="btn btn-outline" onclick="goBackFromPage()">← Back</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="staffPage" class="hidden">
+            <div class="page-hero">
+                <div class="container">
+                    <h1><i class="fas fa-id-badge"></i> Staff & Security</h1>
+                    <p>Meet our dedicated hostel management team</p>
+                </div>
+            </div>
+            <div class="container page-content">
+                <div class="staff-grid">
+                    <div class="staff-card">
+                        <div class="staff-avatar"><i class="fas fa-user-tie"></i></div>
+                        <h3>Dr. Ramesh Kumar</h3>
+                        <div class="staff-role">Chief Warden</div>
+                        <p><i class="fas fa-phone"></i> +91 98765 00001</p>
+                    </div>
+                    <div class="staff-card">
+                        <div class="staff-avatar"><i class="fas fa-user"></i></div>
+                        <h3>Mr. Suresh Babu</h3>
+                        <div class="staff-role">Boys Hostel Warden</div>
+                        <p><i class="fas fa-phone"></i> +91 98765 00002</p>
+                    </div>
+                    <div class="staff-card">
+                        <div class="staff-avatar"><i class="fas fa-user"></i></div>
+                        <h3>Ms. Lakshmi Devi</h3>
+                        <div class="staff-role">Girls Hostel Warden</div>
+                        <p><i class="fas fa-phone"></i> +91 98765 00003</p>
+                    </div>
+                    <div class="staff-card">
+                        <div class="staff-avatar"><i class="fas fa-shield-alt"></i></div>
+                        <h3>Mr. Ravi Singh</h3>
+                        <div class="staff-role">Security Head</div>
+                        <p><i class="fas fa-phone"></i> +91 98765 00004</p>
+                    </div>
+                    <div class="staff-card">
+                        <div class="staff-avatar"><i class="fas fa-utensils"></i></div>
+                        <h3>Mr. Venkat Rao</h3>
+                        <div class="staff-role">Mess Manager</div>
+                        <p><i class="fas fa-phone"></i> +91 98765 00005</p>
+                    </div>
+                    <div class="staff-card">
+                        <div class="staff-avatar"><i class="fas fa-tools"></i></div>
+                        <h3>Mr. Prakash</h3>
+                        <div class="staff-role">Maintenance Head</div>
+                        <p><i class="fas fa-phone"></i> +91 98765 00006</p>
+                    </div>
+                </div>
+                <div class="text-center mt-30"><button class="btn btn-outline" onclick="goBackFromPage()">←
+                        Back</button></div>
+            </div>
+        </section>
+
+        <section id="rulesPage" class="hidden">
+            <div class="page-hero">
+                <div class="container">
+                    <h1><i class="fas fa-gavel"></i> Rules & Regulations</h1>
+                    <p>Important guidelines every resident must follow</p>
+                </div>
+            </div>
+            <div class="container page-content">
+                <ol class="rules-list">
+                    <li>Students must carry their ID cards at all times within the hostel premises.</li>
+                    <li>Entry and exit timings: 6:00 AM - 10:00 PM. Late entry requires a gate pass.</li>
+                    <li>Consumption of alcohol, tobacco, and drugs is strictly prohibited.</li>
+                    <li>Ragging in any form is a punishable offence under law.</li>
+                    <li>Students must maintain cleanliness in rooms and common areas.</li>
+                    <li>Electrical appliances like heaters, irons, and cookers are not allowed in rooms.</li>
+                    <li>Visitors must register at the reception and leave by 6:00 PM.</li>
+                    <li>Noise levels must be kept low, especially during study hours (7 PM - 10 PM).</li>
+                    <li>Any damage to hostel property will be charged to the responsible student.</li>
+                    <li>Students must vacate the hostel during official vacation periods unless approved.</li>
+                    <li>Complaints must be reported through the official complaint system.</li>
+                    <li>Room changes are only permitted through the official request system with admin approval.</li>
+                </ol>
+                <div class="text-center mt-30"><button class="btn btn-outline" onclick="goBackFromPage()">←
+                        Back</button></div>
+            </div>
+        </section>
+
+        <section id="complaintPage" class="hidden">
+            <div class="page-hero">
+                <div class="container">
+                    <h1><i class="fas fa-exclamation-triangle"></i> Raise a Complaint</h1>
+                    <p>Report issues and get them resolved quickly</p>
+                </div>
+            </div>
+            <div class="container page-content">
+                <div class="card" style="max-width:700px;margin:0 auto">
+                    <form id="complaintForm">
+                        <div class="form-group"><label class="form-label">Your Name</label><input type="text"
+                                id="complaintName" class="form-control" required></div>
+                        <div class="form-group"><label class="form-label">Room Number</label><input type="text"
+                                id="complaintRoom" class="form-control" required></div>
+                        <div class="form-group"><label class="form-label">Category</label>
+                            <select id="complaintCategory" class="form-select" required>
+                                <option value="">Select</option>
+                                <option value="maintenance">Maintenance</option>
+                                <option value="cleanliness">Cleanliness</option>
+                                <option value="food">Food/Mess</option>
+                                <option value="security">Security</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label class="form-label">Describe the Issue</label><textarea
+                                id="complaintDesc" class="form-control" rows="4" required
+                                placeholder="Provide details..."></textarea></div>
+                        <button type="submit" class="btn btn-danger btn-block">Submit Complaint</button>
+                    </form>
+                    <div id="complaintSuccess" class="hidden text-center mt-20"><i class="fas fa-check-circle"
+                            style="font-size:40px;color:var(--success)"></i>
+                        <h3 class="mt-10" style="color:var(--success)">Complaint Submitted Successfully</h3>
+                        <p style="color:var(--text-secondary)">Reference: <strong id="complaintRef">-</strong></p>
+                    </div>
+                </div>
+                <div class="text-center mt-30"><button class="btn btn-outline" onclick="goBackFromPage()">←
+                        Back</button></div>
+            </div>
+        </section>
+
+        <section id="faqPage" class="hidden">
+            <div class="page-hero">
+                <div class="container">
+                    <h1><i class="fas fa-question-circle"></i> Frequently Asked Questions</h1>
+                    <p>Find answers to common queries</p>
+                </div>
+            </div>
+            <div class="container page-content" style="max-width:800px">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">How do I apply for hostel accommodation? <i
+                            class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Register on the system, log in, and submit a hostel application from your
+                        dashboard. Select your preferred block and room type.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">How is room allocation done? <i
+                            class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Room allocation is done by the hostel administrator based on availability,
+                        year of study, and preferred block. The system enforces year-based floor restrictions.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">Can I change my room after allocation? <i
+                            class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Yes, you can submit a room change request. If the target room is empty, it
+                        will be auto-approved. Partially filled rooms are also available for selection.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">What are the block/floor restrictions? <i
+                            class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Block A: 1st Year → Floors 1–4, 2nd Year → Floors 4–8, 3rd & 4th Year →
+                        Floors 8–12. Block B: 2nd Year → Floors 1–8, 3rd & 4th Year → Floors 8–12. 1st years cannot
+                        access Block B.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">How do I pay hostel fees? <i
+                            class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">After room allocation, go to the Payment tab in your dashboard. Complete the
+                        payment to confirm your room.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">How do I request a gate pass? <i
+                            class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Navigate to the Gate Pass tab in your dashboard and fill the request form.
+                        Gate passes and vacation passes are available.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">Can my parents/guardians stay in the hostel? <i
+                            class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Guest accommodation can be requested through the Guest tab. Approval is at
+                        the warden's discretion.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">How do I file a complaint? <i
+                            class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Use the Complaint page accessible from the navigation menu. Select a
+                        category, describe the issue, and submit.</div>
+                </div>
+                <div class="text-center mt-30"><button class="btn btn-outline" onclick="goBackFromPage()">←
+                        Back</button></div>
+            </div>
+        </section>
+
+        <section id="contactPage" class="hidden">
+            <div class="page-hero">
+                <div class="container">
+                    <h1><i class="fas fa-phone-alt"></i> Contact & Emergency</h1>
+                    <p>Reach out to us anytime</p>
+                </div>
+            </div>
+            <div class="container page-content">
+                <div class="features-grid">
+                    <div class="feature-card"><i class="fas fa-phone-alt" style="color:var(--success)"></i>
+                        <h3>Emergency Helpline</h3>
+                        <p style="font-size:1.4rem;font-weight:800;color:var(--danger)">+91 98765 11111</p>
+                        <p>Available 24/7</p>
+                    </div>
+                    <div class="feature-card"><i class="fas fa-hospital" style="color:var(--danger)"></i>
+                        <h3>Medical Emergency</h3>
+                        <p style="font-size:1.4rem;font-weight:800;color:var(--danger)">+91 98765 22222</p>
+                        <p>Campus Health Center</p>
+                    </div>
+                    <div class="feature-card"><i class="fas fa-shield-alt" style="color:var(--info)"></i>
+                        <h3>Security Office</h3>
+                        <p style="font-size:1.4rem;font-weight:800;color:var(--primary)">+91 98765 00004</p>
+                        <p>Ground Floor, Main Gate</p>
+                    </div>
+                    <div class="feature-card"><i class="fas fa-envelope"></i>
+                        <h3>Email Us</h3>
+                        <p>hostel@university.edu</p>
+                        <p>Response within 24 hours</p>
+                    </div>
+                    <div class="feature-card"><i class="fas fa-map-marker-alt" style="color:var(--danger)"></i>
+                        <h3>Address</h3>
+                        <p>University Campus, Hostel Admin Block, Ground Floor</p>
+                    </div>
+                    <div class="feature-card"><i class="fas fa-fire-extinguisher" style="color:var(--warning)"></i>
+                        <h3>Fire Emergency</h3>
+                        <p style="font-size:1.4rem;font-weight:800;color:var(--danger)">101</p>
+                        <p>Fire extinguishers on every floor</p>
+                    </div>
+                </div>
+                <div class="text-center mt-30"><button class="btn btn-outline" onclick="goBackFromPage()">←
+                        Back</button></div>
+            </div>
+        </section>
+
+        <section id="galleryPage" class="hidden">
+            <div class="page-hero">
+                <div class="container">
+                    <h1><i class="fas fa-images"></i> Hostel Gallery</h1>
+                    <p>Life at our hostel — memories and moments</p>
+                </div>
+            </div>
+            <div class="container page-content">
+                <div class="gallery-grid">
+                    <div class="gallery-img-item"><img src="images/hostel_building.png" alt="Hostel Building">
+                        <div class="gallery-caption"><i class="fas fa-building"></i> Hostel Building</div>
+                    </div>
+                    <div class="gallery-img-item"><img src="images/hostel_room.png" alt="Modern Rooms">
+                        <div class="gallery-caption"><i class="fas fa-bed"></i> Modern Rooms</div>
+                    </div>
+                    <div class="gallery-img-item"><img src="images/hostel_mess.png" alt="Dining Hall">
+                        <div class="gallery-caption"><i class="fas fa-utensils"></i> Dining Hall</div>
+                    </div>
+                    <div class="gallery-img-item"><img src="images/hostel_gym.png" alt="Gymnasium">
+                        <div class="gallery-caption"><i class="fas fa-dumbbell"></i> Gymnasium</div>
+                    </div>
+                    <div class="gallery-img-item"><img src="images/hostel_study.png" alt="Study Room">
+                        <div class="gallery-caption"><i class="fas fa-book-reader"></i> Study Room</div>
+                    </div>
+                    <div class="gallery-img-item"><img src="images/hostel_garden.png" alt="Garden & Grounds">
+                        <div class="gallery-caption"><i class="fas fa-tree"></i> Garden & Grounds</div>
+                    </div>
+                </div>
+                <div class="text-center mt-30"><button class="btn btn-outline" onclick="goBackFromPage()">←
+                        Back</button></div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="modalOverlay" class="modal-overlay hidden" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
