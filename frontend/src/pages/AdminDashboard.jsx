@@ -10,10 +10,12 @@ const AdminDashboard = () => {
     const [requests, setRequests] = useState({ passes: [], guests: [], swapp: [], complaints: [], applications: [] });
     const [adminRooms, setAdminRooms] = useState([]);
     const [selectedBlock, setSelectedBlock] = useState('');
+    const [blockedStudents, setBlockedStudents] = useState([]);
     const [stats, setStats] = useState({ totalStudents: 0, totalRooms: 0, allocated: 0, vacant: 0 });
 
     useEffect(() => {
         fetchRequests();
+        fetchBlocklist();
     }, []);
 
     useEffect(() => {
@@ -52,12 +54,37 @@ const AdminDashboard = () => {
         }
     };
 
+    const fetchBlocklist = async () => {
+        try {
+            const res = await axios.get('http://localhost:5001/api/requests/admin/blocklist');
+            setBlockedStudents(res.data);
+        } catch (err) {
+            console.error("Error fetching blocklist", err);
+        }
+    };
+
     const handleUpdateStatus = async (type, id, newStatus) => {
         try {
             await axios.put(`http://localhost:5001/api/requests/admin/update/${type}/${id}`, { status: newStatus });
             fetchRequests();
+            fetchBlocklist(); // Re-fetch in case a block was triggered
+            
+            // Refresh rooms and stats to update colors/counts immediately
+            if (selectedBlock) {
+                fetchAdminRooms(selectedBlock);
+            }
         } catch (err) {
             alert('Error updating status');
+        }
+    };
+
+    const handleUnblock = async (userId, type) => {
+        try {
+            const res = await axios.post('http://localhost:5001/api/requests/admin/unblock', { userId, type });
+            alert(res.data.message);
+            fetchBlocklist();
+        } catch (err) {
+            alert('Error unblocking student');
         }
     };
 
@@ -122,6 +149,7 @@ const AdminDashboard = () => {
                         <button className={`tab-btn ${activeTab === 'aTabGuests' ? 'active' : ''}`} onClick={() => setActiveTab('aTabGuests')}><i className="fas fa-user-friends"></i> Guests</button>
                         <button className={`tab-btn ${activeTab === 'aTabSwaps' ? 'active' : ''}`} onClick={() => setActiveTab('aTabSwaps')}><i className="fas fa-exchange-alt"></i> Swaps</button>
                         <button className={`tab-btn ${activeTab === 'aTabComplaints' ? 'active' : ''}`} onClick={() => setActiveTab('aTabComplaints')}><i className="fas fa-exclamation-triangle"></i> Complaints</button>
+                        <button className={`tab-btn ${activeTab === 'aTabBlocklist' ? 'active' : ''}`} onClick={() => setActiveTab('aTabBlocklist')}><i className="fas fa-user-slash"></i> Blocklist</button>
                     </div>
 
                     {/* ===== ROOMS TAB ===== */}
@@ -272,7 +300,7 @@ const AdminDashboard = () => {
                             <div className="card">
                                 <h2 className="card-header"><i className="fas fa-exchange-alt"></i> Room Swap Requests</h2>
                                 <p style={{marginBottom: '10px', color: 'var(--text-secondary)'}}>
-                                    Requests that were auto-approved show instantly. Pending swaps need manual review (e.g. room was full).
+                                    As per security policy, all room swaps now require manual Admin review and approval. Auto-approval has been disabled.
                                 </p>
                                 <table className="data-table">
                                     <thead><tr><th>Student</th><th>Reason</th><th>Status</th><th>Actions</th></tr></thead>
@@ -356,6 +384,66 @@ const AdminDashboard = () => {
                                         {(!requests.complaints || requests.complaints.length === 0) && <tr><td colSpan="6" style={{textAlign:'center', color:'var(--text-secondary)'}}>No complaints yet</td></tr>}
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* ===== BLOCKLIST TAB ===== */}
+                    {activeTab === 'aTabBlocklist' && (
+                        <div className="tab-content active">
+                            <div className="card">
+                                <h2 className="card-header"><i className="fas fa-user-slash"></i> Student Blocklist Management</h2>
+                                <p style={{marginBottom: '20px', color: '#c62828'}}>
+                                    <strong><i className="fas fa-info-circle"></i> Security Protocol:</strong> These students have reached 3+ rejections. Access is restricted until a manual conversation with the Administrator/Warden occurs.
+                                </p>
+
+                                {/* Applications Blocklist */}
+                                <div style={{marginBottom: '30px'}}>
+                                    <h3 style={{color: '#c62828', marginBottom: '10px'}}><i className="fas fa-clipboard-list"></i> Restricted from Room Applications</h3>
+                                    <table className="data-table">
+                                        <thead><tr><th>Name</th><th>Roll No</th><th>Year</th><th>Reason</th><th>Action</th></tr></thead>
+                                        <tbody>
+                                            {blockedStudents.filter(s => s.isAppBlocked).map(s => (
+                                                <tr key={s._id}>
+                                                    <td>{s.name}</td>
+                                                    <td>{s.rollNo}</td>
+                                                    <td>{s.year}</td>
+                                                    <td>3+ Application Rejections</td>
+                                                    <td>
+                                                        <button className="btn btn-success" style={{padding:'5px 10px', fontSize:'12px'}} onClick={() => handleUnblock(s._id, 'application')}>
+                                                            Restore App Access
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            {blockedStudents.filter(s => s.isAppBlocked).length === 0 && <tr><td colSpan="5" style={{textAlign:'center', color:'var(--text-secondary)'}}>No students blocked for applications</td></tr>}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                {/* Swaps Blocklist */}
+                                <div>
+                                    <h3 style={{color: '#c62828', marginBottom: '10px'}}><i className="fas fa-exchange-alt"></i> Restricted from Room Swaps</h3>
+                                    <table className="data-table">
+                                        <thead><tr><th>Name</th><th>Roll No</th><th>Year</th><th>Reason</th><th>Action</th></tr></thead>
+                                        <tbody>
+                                            {blockedStudents.filter(s => s.isSwapBlocked).map(s => (
+                                                <tr key={s._id}>
+                                                    <td>{s.name}</td>
+                                                    <td>{s.rollNo}</td>
+                                                    <td>{s.year}</td>
+                                                    <td>3+ Swap Rejections</td>
+                                                    <td>
+                                                        <button className="btn btn-success" style={{padding:'5px 10px', fontSize:'12px'}} onClick={() => handleUnblock(s._id, 'swap')}>
+                                                            Restore Swap Access
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            {blockedStudents.filter(s => s.isSwapBlocked).length === 0 && <tr><td colSpan="5" style={{textAlign:'center', color:'var(--text-secondary)'}}>No students blocked for swaps</td></tr>}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     )}

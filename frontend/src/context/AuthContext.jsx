@@ -34,21 +34,21 @@ export const AuthProvider = ({ children }) => {
   const login = async (rollNo, password) => {
     try {
       const res = await axios.post('http://localhost:5001/api/auth/login', { rollNo, password });
-      
-      const { token, id, role, name, year } = res.data;
-      
-      const userData = { id, rollNo, role, name, year };
-      
+
+      const { token, id, role, name, year, isAppBlocked, isSwapBlocked } = res.data;
+
+      const userData = { id, rollNo, role, name, year, isAppBlocked, isSwapBlocked };
+
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(userData));
-      
+
       setUser(userData);
       return { success: true, role };
     } catch (error) {
-       return { 
-           success: false, 
-           message: error.response?.data?.message || 'Login failed' 
-       };
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Login failed'
+      };
     }
   };
 
@@ -57,10 +57,10 @@ export const AuthProvider = ({ children }) => {
       await axios.post('http://localhost:5001/api/auth/register', { name, rollNo, password, year, role, adminSecret });
       return { success: true };
     } catch (error) {
-       return { 
-           success: false, 
-           message: error.response?.data?.message || 'Registration failed' 
-       };
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Registration failed'
+      };
     }
   };
 

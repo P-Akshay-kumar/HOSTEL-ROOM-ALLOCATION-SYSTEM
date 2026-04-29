@@ -21,8 +21,10 @@ const StudentDashboard = () => {
     const approvedApp = myApps.find(a => a.status === 'Approved');
     const pendingApp = myApps.find(a => a.status === 'Pending');
     const rejectionCount = myApps.filter(a => a.status === 'Rejected').length;
-    const isBlocked = rejectionCount >= 3;
-    const canApply = !approvedApp && !pendingApp && !isBlocked;
+    const swapRejectionCount = history.swaps.filter(s => s.status === 'Rejected').length;
+    const isAppBlocked = user?.isAppBlocked;
+    const isSwapBlocked = user?.isSwapBlocked;
+    const canApply = !approvedApp && !pendingApp && !isAppBlocked;
 
     useEffect(() => {
         if (user && user.id) {
@@ -39,7 +41,10 @@ const StudentDashboard = () => {
     const fetchMyApps = async () => {
         if (!user?.id) return;
         try {
+            // Force status to '-' temporarily to show refresh is happening
+            setMyApps([]); 
             const res = await axios.get(`http://localhost:5001/api/rooms/my-applications/${user.id}`);
+            console.log("Dashboard refreshed. Current application data:", res.data);
             setMyApps(res.data);
         } catch (err) {
             console.error("Error fetching applications", err);
@@ -109,13 +114,18 @@ const StudentDashboard = () => {
                             <h1>Welcome, <span style={{color: 'var(--secondary)'}}>{user?.name || 'Student'}</span></h1>
                             <p style={{color: 'var(--text-secondary)'}}>Manage your hostel accommodation, requests, and payments</p>
                         </div>
-                        <button className="btn btn-outline" onClick={handleLogout}><i className="fas fa-sign-out-alt"></i> Logout</button>
+                        <div className="dashboard-actions" style={{display:'flex', gap:'10px'}}>
+                            <button className="btn btn-outline" style={{background:'#f0f4f8', color:'var(--primary)'}} onClick={() => { fetchMyApps(); fetchHistory(); alert('Dashboard Refreshed!'); }}>
+                                <i className="fas fa-sync"></i> Refresh
+                            </button>
+                            <button className="btn btn-outline" onClick={handleLogout}><i className="fas fa-sign-out-alt"></i> Logout</button>
+                        </div>
                     </div>
                     
                     <div className="dashboard-cards">
                         <div className="dashboard-card"><i className="fas fa-clipboard-list"></i>
-                            <div className="count" style={{color: approvedApp ? '#2e7d32' : pendingApp ? '#f57f17' : isBlocked ? '#c62828' : 'inherit'}}>
-                                {approvedApp ? 'Approved' : pendingApp ? 'Pending' : isBlocked ? 'Blocked' : 'Not Applied'}
+                            <div className="count" style={{color: approvedApp ? '#2e7d32' : pendingApp ? '#f57f17' : isAppBlocked ? '#c62828' : 'inherit'}}>
+                                {approvedApp ? 'Approved' : pendingApp ? 'Pending' : isAppBlocked ? 'Blocked' : 'Not Applied'}
                             </div>
                             <div className="label">Application Status</div>
                         </div>
@@ -136,7 +146,19 @@ const StudentDashboard = () => {
                     <div className="tabs" id="studentTabs">
                         <button className={`tab-btn ${activeTab === 'sTabOverview' ? 'active' : ''}`} onClick={() => setActiveTab('sTabOverview')}><i className="fas fa-home"></i> Overview</button>
                         <button className={`tab-btn ${activeTab === 'sTabRoomSelect' ? 'active' : ''}`} onClick={() => setActiveTab('sTabRoomSelect')}><i className="fas fa-th-large"></i> Room Selection</button>
-                        <button className={`tab-btn ${activeTab === 'sTabRoomChange' ? 'active' : ''}`} onClick={() => setActiveTab('sTabRoomChange')}><i className="fas fa-exchange-alt"></i> Room Change</button>
+                        <button 
+                            className={`tab-btn ${activeTab === 'sTabRoomChange' ? 'active' : ''}`} 
+                            onClick={() => {
+                                if (!approvedApp) {
+                                    alert("Access Denied: You must have an Approved Room Allocation before you can request a swap.");
+                                    return;
+                                }
+                                setActiveTab('sTabRoomChange');
+                            }}
+                            style={{ opacity: !approvedApp ? 0.5 : 1, cursor: !approvedApp ? 'not-allowed' : 'pointer' }}
+                        >
+                            <i className="fas fa-exchange-alt"></i> Room Change
+                        </button>
                         <button className={`tab-btn ${activeTab === 'sTabGuest' ? 'active' : ''}`} onClick={() => setActiveTab('sTabGuest')}><i className="fas fa-user-friends"></i> Guest</button>
                         <button className={`tab-btn ${activeTab === 'sTabGatePass' ? 'active' : ''}`} onClick={() => setActiveTab('sTabGatePass')}><i className="fas fa-sign-out-alt"></i> Gate Pass</button>
                         <button className={`tab-btn ${activeTab === 'sTabPayment' ? 'active' : ''}`} onClick={() => setActiveTab('sTabPayment')}><i className="fas fa-credit-card"></i> Payment</button>
@@ -164,11 +186,11 @@ const StudentDashboard = () => {
                                     <p style={{marginTop:'10px'}}>Your application for room <strong>{pendingApp.room?.roomNumber}</strong> ({pendingApp.room?.block}, Floor {pendingApp.room?.floor}) is awaiting admin approval.</p>
                                     <p style={{marginTop:'10px', color:'var(--text-secondary)'}}>You cannot submit another application until this one is reviewed.</p>
                                 </div>
-                            ) : isBlocked ? (
+                            ) : isAppBlocked ? (
                                 <div className="card" style={{borderLeft: '5px solid #c62828'}}>
                                     <h2 className="card-header" style={{color:'#c62828'}}><i className="fas fa-ban"></i> Applications Blocked</h2>
-                                    <p style={{marginTop:'10px'}}>Your room applications have been rejected {rejectionCount} times. You are temporarily blocked from submitting new applications.</p>
-                                    <p style={{marginTop:'10px'}}><strong>Please contact the hostel administration directly:</strong></p>
+                                    <p style={{marginTop:'10px'}}>Your room applications has been restricted due to 3+ rejections. You are temporarily blocked from submitting new applications.</p>
+                                    <p style={{marginTop:'10px'}}><strong>Please visit the Warden's office for a conversation to restore your access.</strong></p>
                                     <p>📧 admin.hostel@university.edu &nbsp;|&nbsp; 📞 +91 98765 00003</p>
                                 </div>
                             ) : (
@@ -212,10 +234,10 @@ const StudentDashboard = () => {
                         <div className="tab-content active" id="sTabRoomSelect">
                             {!canApply ? (
                                 <div className="card">
-                                    <h2 className="card-header"><i className="fas fa-th-large"></i> Room Selection</h2>
+                                    <h2 className="card-header"><i className="fas fa-th-large"></i> Room Selection Access</h2>
                                     {approvedApp && <p style={{marginTop:'10px', color:'#2e7d32'}}>✅ You already have an approved room: <strong>{approvedApp.room?.roomNumber}</strong></p>}
                                     {pendingApp && <p style={{marginTop:'10px', color:'#e65100'}}>⏳ You have a pending application for room <strong>{pendingApp.room?.roomNumber}</strong>. Wait for admin review.</p>}
-                                    {isBlocked && <p style={{marginTop:'10px', color:'#c62828'}}>🚫 You've been rejected 3 times. Please contact admin directly.</p>}
+                                    {isAppBlocked && <p style={{marginTop:'10px', color:'#c62828'}}>🚫 Access Restricted: You have reached 3 rejections for room applications. Please visit the Warden's office.</p>}
                                 </div>
                             ) : (
                             <div className="card">
@@ -286,59 +308,76 @@ const StudentDashboard = () => {
                     {/* Room Change Tab */}
                     {activeTab === 'sTabRoomChange' && (
                         <div className="tab-content active" id="sTabRoomChange">
-                             <div className="card mb-20">
-                                 <h2 className="card-header"><i className="fas fa-exchange-alt"></i> Room Change Request</h2>
-                                 <form onSubmit={async (e) => { 
-                                     e.preventDefault(); 
-                                     if (!swapTarget) { alert('Please select a target room'); return; }
-                                     try {
-                                         const res = await axios.post('http://localhost:5001/api/requests/room-change', {
-                                             student: user.id,
-                                             currentRoom: null,
-                                             requestedRoom: swapTarget,
-                                             reason: e.target.swapReason.value,
-                                             year: user.year
-                                         });
-                                         alert(res.data.message);
-                                         fetchHistory();
-                                         e.target.reset();
-                                         setSwapTarget('');
-                                     } catch (err) {
-                                         alert(err.response?.data?.message || 'Error submitting request');
-                                     }
-                                 }}>
-                                     <div className="form-row mb-20">
-                                         <div className="form-group"><label className="form-label">Target Room</label>
-                                             <select className="form-select" value={swapTarget} onChange={(e) => setSwapTarget(e.target.value)} required>
-                                                 <option value="">Select a room ({swapRooms.length} available)</option>
-                                                 {swapRooms.map(r => (
-                                                     <option key={r._id} value={r._id}>
-                                                         {r.roomNumber} — {r.block} Floor {r.floor} ({r.occupancy}/{r.capacity} beds used)
-                                                     </option>
-                                                 ))}
-                                             </select>
-                                         </div>
-                                         <div className="form-group"><label className="form-label">Reason</label><input type="text" id="swapReason" className="form-control" placeholder="Reason for change" required /></div>
+                             {isSwapBlocked ? (
+                                 <div className="card" style={{borderLeft: '5px solid #c62828'}}>
+                                     <h2 className="card-header" style={{color:'#c62828'}}><i className="fas fa-ban"></i> Room Swap Restricted</h2>
+                                     <p style={{marginTop:'10px'}}>Your room change requests have been restricted due to 3+ rejections.</p>
+                                     <p style={{marginTop:'10px'}}><strong>Please visit the Warden's office for a conversation to restore your swap access.</strong></p>
+                                 </div>
+                             ) : !approvedApp ? (
+                                 <div className="card">
+                                     <h2 className="card-header"><i className="fas fa-exchange-alt"></i> Room Change</h2>
+                                     <p style={{marginTop:'10px'}}>You must have an <strong>Approved Room</strong> before you can request a swap.</p>
+                                 </div>
+                             ) : (
+                                 <>
+                                     <div className="card mb-20">
+                                         <h2 className="card-header"><i className="fas fa-exchange-alt"></i> Room Change Request</h2>
+                                         <form onSubmit={async (e) => { 
+                                             e.preventDefault(); 
+                                             if (!swapTarget) { alert('Please select a target room'); return; }
+                                             try {
+                                                 const res = await axios.post('http://localhost:5001/api/requests/room-change', {
+                                                     student: user.id,
+                                                     currentRoom: approvedApp?.room?._id,
+                                                     requestedRoom: swapTarget,
+                                                     reason: e.target.swapReason.value,
+                                                     year: user.year
+                                                 });
+                                                 alert(res.data.message);
+                                                 fetchHistory();
+                                                 fetchMyApps(); // Refresh dashboard cards
+                                                 e.target.reset();
+                                                 setSwapTarget('');
+                                             } catch (err) {
+                                                 alert(err.response?.data?.message || 'Error submitting request');
+                                             }
+                                         }}>
+                                             {swapRejectionCount > 0 && <p style={{color:'#c62828', marginBottom:'10px'}}>⚠️ Warning: You have {swapRejectionCount}/3 swap rejections.</p>}
+                                             <div className="form-row mb-20">
+                                                 <div className="form-group"><label className="form-label">Target Room</label>
+                                                     <select className="form-select" value={swapTarget} onChange={(e) => setSwapTarget(e.target.value)} required>
+                                                         <option value="">Select a room ({swapRooms.length} available)</option>
+                                                         {swapRooms.map(r => (
+                                                             <option key={r._id} value={r._id}>
+                                                                 {r.roomNumber} — {r.block} Floor {r.floor} ({r.occupancy}/{r.capacity} beds used)
+                                                         </option>
+                                                     ))}
+                                                     </select>
+                                                 </div>
+                                                 <div className="form-group"><label className="form-label">Reason</label><input type="text" id="swapReason" className="form-control" placeholder="Reason for change" required /></div>
+                                             </div>
+                                             <button type="submit" className="btn btn-primary mt-10">Submit Request</button>
+                                         </form>
                                      </div>
-                                     <button type="submit" className="btn btn-primary mt-10">Submit Request</button>
-                                 </form>
-                             </div>
-                             
-                             <div className="card">
-                                 <h3 style={{marginBottom:'15px'}}>Swap History</h3>
-                                 <table className="data-table">
-                                     <thead><tr><th>Created At</th><th>Reason</th><th>Status</th></tr></thead>
-                                     <tbody>
-                                         {history.swaps.map(s => (
-                                             <tr key={s._id}>
-                                                 <td>{new Date(s.createdAt).toLocaleDateString()}</td>
-                                                 <td>{s.reason}</td>
-                                                 <td><strong style={{color: s.status === 'Approved' ? '#2e7d32' : s.status === 'Rejected' ? '#c62828' : '#f57f17'}}>{s.status}</strong></td>
-                                             </tr>
-                                         ))}
-                                     </tbody>
-                                 </table>
-                             </div>
+                                     
+                                     <div className="card">
+                                         <h3 style={{marginBottom:'15px'}}>Swap History</h3>
+                                         <table className="data-table">
+                                             <thead><tr><th>Created At</th><th>Reason</th><th>Status</th></tr></thead>
+                                             <tbody>
+                                                 {history.swaps.map(s => (
+                                                     <tr key={s._id}>
+                                                         <td>{new Date(s.createdAt).toLocaleDateString()}</td>
+                                                         <td>{s.reason}</td>
+                                                         <td><strong style={{color: s.status === 'Approved' ? '#2e7d32' : s.status === 'Rejected' ? '#c62828' : '#f57f17'}}>{s.status}</strong></td>
+                                                     </tr>
+                                                 ))}
+                                             </tbody>
+                                         </table>
+                                     </div>
+                                 </>
+                             )}
                         </div>
                     )}
 

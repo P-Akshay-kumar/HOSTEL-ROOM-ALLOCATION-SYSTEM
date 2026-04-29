@@ -56,10 +56,42 @@ router.post('/login', async (req, res) => {
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
     const token = jwt.sign({ id: user._id, role: user.role, year: user.year }, process.env.JWT_SECRET || 'secret', { expiresIn: '10h' });
-    res.json({ token, id: user._id, role: user.role, name: user.name, year: user.year, rollNo: user.rollNo });
+    res.json({ 
+        token, 
+        id: user._id, 
+        role: user.role, 
+        name: user.name, 
+        year: user.year, 
+        rollNo: user.rollNo,
+        isAppBlocked: user.isAppBlocked || false,
+        isSwapBlocked: user.isSwapBlocked || false
+    });
   } catch (err) {
     res.status(500).json({ message: 'Server error: ' + err.message });
   }
+});
+
+// Verify
+router.get('/verify', async (req, res) => {
+    try {
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) return res.status(401).json({ message: 'No token' });
+        
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret');
+        const user = await User.findById(decoded.id);
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        
+        res.json({ 
+            id: user._id, 
+            role: user.role, 
+            name: user.name, 
+            year: user.year,
+            isAppBlocked: user.isAppBlocked || false,
+            isSwapBlocked: user.isSwapBlocked || false
+        });
+    } catch (err) {
+        res.status(401).json({ message: 'Invalid token' });
+    }
 });
 
 module.exports = router;

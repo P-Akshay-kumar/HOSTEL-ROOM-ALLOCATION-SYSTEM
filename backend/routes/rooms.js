@@ -73,22 +73,46 @@ router.post('/apply', async (req, res) => {
         }
         if (!user) return res.status(404).json({ message: 'Student not found in the database' });
 
-        // Check if user already has a Pending or Approved application
+        // 1. Strict Sequential check: Wait for status of previous one
         const existingActive = await Application.findOne({ 
             student: user._id, 
-            status: { $in: ['Pending', 'Approved'] } 
+            status: 'Pending'
         });
         if (existingActive) {
-            if (existingActive.status === 'Approved') {
-                return res.status(400).json({ message: 'You already have an approved room allocation.' });
-            }
-            return res.status(400).json({ message: 'You already have a pending application. Please wait for admin to review it.' });
+            return res.status(400).json({ message: 'You have a pending application. You cannot submit another request until you get a status (Accepted/Rejected) from the Admin.' });
         }
 
-        // 3-Strike Rule: count rejections
+        // 2. Already Allocated check
+        const approvedApp = await Application.findOne({ student: user._id, status: 'Approved' });
+        if (approvedApp) {
+            return res.status(400).json({ message: 'You already have an approved room allocation. To change rooms, use the Room Swap module.' });
+        }
+
+        // 3. Daily Limit check (Max 2 apps/day)
+        const startOfToday = new Date();
+        startOfToday.setHours(0, 0, 0, 0);
+        const dailyCount = await Application.countDocuments({
+            student: user._id,
+            createdAt: { $gte: startOfToday }
+        });
+        if (dailyCount >= 2) {
+            return res.status(403).json({ message: 'Security Constraint: You can only submit a maximum of 2 applications per calendar day. Please try again tomorrow.' });
+        }
+
+        // Explicit Block Check
+        if (user.isAppBlocked) {
+            return res.status(403).json({ message: 'Your access to room applications has been restricted due to multiple rejections. Please contact the Hostel Admin for a conversation to restore your access.' });
+        }
+
+        // 3-Strike Rule: count rejections (Legacy check - still useful but isAppBlocked is now primary)
         const rejectionCount = await Application.countDocuments({ student: user._id, status: 'Rejected' });
         if (rejectionCount >= 3) {
-            return res.status(400).json({ message: 'You have been rejected 3 times. Please contact the hostel admin directly for further assistance.' });
+            // Auto-block if not already flagged (Safety catch)
+            if (!user.isAppBlocked) {
+                user.isAppBlocked = true;
+                await user.save();
+            }
+            return res.status(403).json({ message: 'You have been rejected 3 times. Access restricted. Please contact the admin.' });
         }
 
         const newApp = new Application({ student: user._id, room: roomId, status: 'Pending' });

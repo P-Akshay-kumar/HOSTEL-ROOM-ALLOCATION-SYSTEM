@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+
+# Extra documentation (not needed in repo)
+API_Endpoints_Documentation.md
+Architecture_Technical_Description.md
+technical_presentation_guide.md
+uml_diagrams.md
+architecture.mmd
+ppt_generation_prompt.txt
+
+# Diagram source files (PNGs are kept, .mmd source not needed)
+diagrams/*.mmd
+
+# Old standalone architecture image (replaced by diagrams/ folder version)
+Architecture_Diagram.png
+
+# Demo/test files (presentation tools, not core app)
+backend/demo_server.js
+backend/test_api.js
+backend/API_Demonstration_Guide.md
+backend/test.js
+backend/test_validation.js
+backend/sync-db.js
