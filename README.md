@@ -13,8 +13,7 @@ A professional, real-time MERN stack application for managing hostel room alloca
 6. [System Architecture & UML Diagrams](#-system-architecture--uml-diagrams)
 7. [System Requirements](#-system-requirements)
 8. [Hardware & Software Requirements](#-hardware--software-requirements)
-9. [Modules & Work Distribution](#-modules--work-distribution)
-10. [Setup & Installation](#-setup--installation)
+9. [Setup & Installation](#-setup--installation)
 
 ---
 
@@ -130,18 +129,7 @@ Shows how the system fits into institutional operations, interacting with studen
 - **Storage**: SSD with at least 500MB free for project files
 - **Connectivity**: Stable internet for Database-as-a-Service (Cloud Atlas)
 
----
 
-## 👥 Modules & Work Distribution
-
-| Team Member | Module Responsibilities | Key Contributions |
-| :--- | :--- | :--- |
-| **Member 1** | **Frontend Architect** | Student Dashboard UI, Room Selection Grid, Auth Context Integration. |
-| **Member 2** | **Admin Experience Dev** | Admin Dashboard, Request Filter Logic, Blocklist Management UI. |
-| **Member 3** | **Backend Logic Engineer** | Room Allocation API, Swap Request Handler, Capacity Validation. |
-| **Member 4** | **Security & Data Dev** | 3-Strike Rule Logic, Database Sync Scripts, MongoDB Schema Design. |
-
----
 
 ## 📦 Setup & Installation
 
